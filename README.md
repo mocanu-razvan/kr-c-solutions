@@ -1,4 +1,4 @@
-kr-c-solutions
-==============
+K&R C Solutions
+===================
 
-Solutions to all exercises in the classic K&amp;R textbook on C.
+Solutions to all exercises in the classic K&R textbook on C.
