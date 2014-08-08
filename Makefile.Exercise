@@ -1,0 +1,10 @@
+SRC = $(wildcard *.c)
+BIN = $(basename $(SRC))
+CFLAGS = -std=c90 -pedantic -Wall -Wextra -g
+
+.PHONY: clean
+
+$(BIN):
+
+clean:
+	$(RM) $(BIN).exe
