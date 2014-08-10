@@ -1,6 +1,6 @@
 /*
  * Exercise 1-16 from K+R
- * Copyright © 2014 Rãzvan Mocanu
+ * Copyright ï¿½ 2014 RÄƒzvan Mocanu
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,42 +24,45 @@
 
 #include <stdio.h>
 
-#define MAX 5 /* Maximum input line length. */
+#define MAX 1000 /* Maximum input line length. */
 
 int krgetline(char s[], int lim);
 
 main()
 {
-    int len, mlen, max, total;
-    char line[MAX];
+	int len;
+	long mlen, max, total;
+	char line[MAX];
 
-    mlen = len = max = total = 0;
-    while ((len = krgetline(line, MAX)) > 0) {
-	mlen = mlen + len;
-	if (len != MAX - 1 || line[MAX - 1] == '\n') {
-	    if (mlen > max)
-		max = mlen;
-	    total = total + mlen;
-	    mlen = 0;
+	mlen = len = max = total = 0;
+	while ((len = krgetline(line, MAX)) > 0) {
+		mlen = mlen + len;
+		if (len != MAX - 1 || line[MAX - 1] == '\n') {
+			if (mlen > max)
+				max = mlen;
+			total = total + mlen;
+			mlen = 0;
+		}
 	}
-    }
-    if (total > 0) {
-	printf("longest: %d\n", max);
-	printf("total: %d\n", total);
-    }
-    return 0;
+	if (total > 0) {
+		printf("longest: %d\n", max);
+		printf("total: %d\n", total);
+	}
+
+	return 0;
 }
 
 int krgetline(char s[], int lim)
 {
-    int c, i;
+	int c, i;
 
-    for (i = 0; i < lim - 1 && (c = getchar()) != EOF && c != '\n'; ++i)
-	s[i] = c;
-    if (c == '\n') {
-	s[i] = c;
-	++i;
-    }
-    s[i] = '\0';
-    return i;
+	for (i = 0; i < lim - 1 && (c = getchar()) != EOF && c != '\n'; ++i)
+		s[i] = c;
+	if (c == '\n') {
+		s[i] = c;
+		++i;
+	}
+	s[i] = '\0';
+
+	return i;
 }
