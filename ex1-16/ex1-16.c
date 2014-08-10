@@ -26,7 +26,7 @@
 
 #define MAX 1000 /* Maximum input line length. */
 
-int krgetline(char s[], int lim);
+int getline(char s[], int lim);
 
 main()
 {
@@ -35,7 +35,7 @@ main()
 	char line[MAX];
 
 	mlen = len = max = total = 0;
-	while ((len = krgetline(line, MAX)) > 0) {
+	while ((len = getline(line, MAX)) > 0) {
 		mlen = mlen + len;
 		if (len != MAX - 1 || line[MAX - 1] == '\n') {
 			if (mlen > max)
@@ -52,7 +52,7 @@ main()
 	return 0;
 }
 
-int krgetline(char s[], int lim)
+int getline(char s[], int lim)
 {
 	int c, i;
 
