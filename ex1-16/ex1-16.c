@@ -22,47 +22,62 @@
  * the text.
  */
 
+/*
+ * NOTE: Reading the requirement carefuly leads me to believe the authors
+ * were hinting at revising the main() function since they mention printing
+ * and counting the total length of the text, operations which the getline()
+ * function most certainly shouldn't do.
+ *
+ * In the first version I did just this, but then I observed that
+ * information relating to where a line should end leaked out from
+ * getline() into main().
+ *
+ * Reconsidering a better solution, I ended up modifying getline()
+ * which leads to a clean solution that separates the concerns of
+ * the functions.
+ */
+
 #include <stdio.h>
 
-#define MAX 1000 /* Maximum input line length. */
+#define MAX 3 /* Maximum input line length. */
 
-int getline(char s[], int lim);
+long getline(char s[], int lim);
 
 main()
 {
-	int len;
-	long mlen, max, total;
+	long len, max, total;
 	char line[MAX];
 
-	mlen = len = max = total = 0;
+	len = max = total = 0;
 	while ((len = getline(line, MAX)) > 0) {
-		mlen = mlen + len;
-		if (len != MAX - 1 || line[MAX - 1] == '\n') {
-			if (mlen > max)
-				max = mlen;
-			total = total + mlen;
-			mlen = 0;
-		}
+		if (len > max)
+			max = len;
+		total = total + len;
 	}
-	if (total > 0) {
-		printf("longest: %d\n", max);
-		printf("total: %d\n", total);
-	}
+
+	printf("longest: %d\n", max);
+	printf("total: %d\n", total);
 
 	return 0;
 }
 
-int getline(char s[], int lim)
+/* Stores as much as possible into s and returns entire line length. */
+long getline(char s[], int lim)
 {
 	int c, i;
+	long j;
 
-	for (i = 0; i < lim - 1 && (c = getchar()) != EOF && c != '\n'; ++i)
-		s[i] = c;
-	if (c == '\n') {
+	i = 0;
+	for (j = 0; (c = getchar()) != EOF && c != '\n'; ++j)
+		if (i < lim - 1) {
+			s[i] = c;
+			++i;
+		}
+	if (c == '\n' && i < lim - 1) {
 		s[i] = c;
 		++i;
 	}
 	s[i] = '\0';
 
-	return i;
+	return j;
 }
