@@ -39,7 +39,7 @@
 
 #include <stdio.h>
 
-#define MAX 3 /* Maximum input line length. */
+#define MAX 100 /* Maximum input line length. */
 
 long getline(char s[], int lim);
 
