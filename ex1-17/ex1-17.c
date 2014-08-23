@@ -1,6 +1,6 @@
 /*
- * Exercise 1-7 from K+R
- * Copyright (c) 2013 Răzvan Mocanu
+ * Exercise 1-17 from K+R
+ * Copyright (c) 2014 Răzvan Mocanu
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,12 +17,47 @@
  */
 
 /*
- * Write a program to print the value of EOF.
+ * Write a program to print all input lines that are longer than 80 characters.
  */
 
 #include <stdio.h>
 
+#define MAX 1000 /* Maximum input line length. */
+#define LIMIT 80
+
+int getline(char s[], int lim);
+
 main()
 {
-	printf("EOF = %d", EOF);
+	int len;
+	long mlen;
+	char line[MAX];
+
+	mlen = len = 0;
+	while ((len = getline(line, MAX)) > 0) {
+		mlen = mlen + len;
+		if (len != MAX - 1 || line[MAX - 1] == '\n') {
+			if (mlen > LIMIT) {
+				printf("%s", line);
+			}
+			mlen = 0;
+		}
+	}
+
+	return 0;
+}
+
+int getline(char s[], int lim)
+{
+	int c, i;
+
+	for (i = 0; i < lim - 1 && (c = getchar()) != EOF && c != '\n'; ++i)
+		s[i] = c;
+	if (c == '\n') {
+		s[i] = c;
+		++i;
+	}
+	s[i] = '\0';
+
+	return i;
 }

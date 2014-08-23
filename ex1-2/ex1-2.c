@@ -1,6 +1,6 @@
 /*
  * Exercise 1-2 from K+R
- * Copyright © 2013 Rãzvan Mocanu
+ * Copyright (c) 2013 RÄƒzvan Mocanu
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
