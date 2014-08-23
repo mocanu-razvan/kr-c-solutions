@@ -22,42 +22,54 @@
 
 #include <stdio.h>
 
-#define MAX 1000 /* Maximum input line length. */
+#define MAX 100 /* Maximum input line length. */
 #define LIMIT 80
 
-int getline(char s[], int lim);
+long getline(char s[], int lim);
 
 main()
 {
-	int len;
-	long mlen;
+	long len;
 	char line[MAX];
 
-	mlen = len = 0;
+	len = 0;
 	while ((len = getline(line, MAX)) > 0) {
-		mlen = mlen + len;
-		if (len != MAX - 1 || line[MAX - 1] == '\n') {
-			if (mlen > LIMIT) {
-				printf("%s", line);
-			}
-			mlen = 0;
+		if (len > LIMIT) {
+			printf("%s", line);
+
+			/*
+			 * The returned length excludes newline characters.
+			 * Print a newline for nice output formatting when it is impossible
+			 * for the printed line to have contained a newline character.
+			 * If a line contains a newline character then its length must be
+			 * at most MAX - 2 since the last 2 characters must be in this case
+			 * \n and \0.
+			 */
+			if (len > MAX - 2)
+				printf("\n");
 		}
 	}
 
 	return 0;
 }
 
-int getline(char s[], int lim)
+/* Stores as much as possible into s and returns entire line length. */
+long getline(char s[], int lim)
 {
 	int c, i;
+	long j;
 
-	for (i = 0; i < lim - 1 && (c = getchar()) != EOF && c != '\n'; ++i)
-		s[i] = c;
-	if (c == '\n') {
+	i = 0;
+	for (j = 0; (c = getchar()) != EOF && c != '\n'; ++j)
+		if (i < lim - 1) {
+			s[i] = c;
+			++i;
+		}
+	if (c == '\n' && i < lim - 1) {
 		s[i] = c;
 		++i;
 	}
 	s[i] = '\0';
 
-	return i;
+	return j;
 }
