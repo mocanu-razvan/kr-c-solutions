@@ -35,17 +35,24 @@
  * Reconsidering a better solution, I ended up modifying getline()
  * which leads to a clean solution that separates the concerns of
  * the functions.
+ *
+ * Also, it turns out it's best to include a newline character at the end of
+ * the line, even if the line array is not big enough to hold the entire line,
+ * because the purpose of the getline() function is to do a best effort to
+ * acquire a line and its users expect lines terminated with newline characters.
+ * Otherwise, unintuitive logic would have to be put in main() to determine
+ * if the line contains a newline character or not.
  */
 
 #include <stdio.h>
 
 #define MAX 100 /* Maximum input line length. */
 
-long getline(char s[], int lim);
+int getline(char s[], int lim);
 
-main()
+int main()
 {
-	long len, max, total;
+	int len, max, total;
 	char line[MAX];
 
 	len = max = total = 0;
@@ -61,23 +68,30 @@ main()
 	return 0;
 }
 
-/* Stores as much as possible into s and returns entire line length. */
-long getline(char s[], int lim)
+/*
+ * Reads a line into s and returns its length.
+ * The returned length may be larger than lim.
+ * A newline character is always put at the end of the line, even if s is not
+ * big enough to store the entire line, unless the line ends with EOF.
+ */
+int getline(char s[], int lim)
 {
-	int c, i;
-	long j;
+	int c, j;
+	long i;
 
-	i = 0;
-	for (j = 0; (c = getchar()) != EOF && c != '\n'; ++j)
-		if (i < lim - 1) {
-			s[i] = c;
-			++i;
+	j = 0;
+	for (i = 0; (c = getchar()) != EOF && c != '\n'; ++i)
+		/* Leave room for a potential newline char at the end. */
+		if (i < lim - 2) {
+			s[j] = c;
+			++j;
 		}
-	if (c == '\n' && i < lim - 1) {
-		s[i] = c;
+	if (c == '\n') {
+		s[j] = c;
+		++j;
 		++i;
 	}
-	s[i] = '\0';
+	s[j] = '\0';
 
-	return j;
+	return i;
 }
