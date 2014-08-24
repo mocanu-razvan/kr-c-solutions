@@ -22,7 +22,7 @@
 
 #include <stdio.h>
 
-#define MAX 5 /* Maximum input line length. */
+#define MAX 100 /* Maximum input line length. */
 
 int getline(char s[], int lim);
 int trimline(char s[], int lim);
