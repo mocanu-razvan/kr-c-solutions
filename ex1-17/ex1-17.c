@@ -22,47 +22,42 @@
 
 #include <stdio.h>
 
-#define MAX 100 /* Maximum input line length. */
-#define LIMIT 80
+#define MAX 5 /* Maximum input line length. */
+#define LIMIT 3
 
 int getline(char s[], int lim);
 
 int main()
 {
-	int len;
+	/* `total` represents a line's total length. */
+	int len, total;
 	char line[MAX];
 
-	len = 0;
-	while ((len = getline(line, MAX)) > 0)
-		if (len > LIMIT)
+	len = total = 0;
+	while ((len = getline(line, MAX)) > 0) {
+		total = total + len;
+
+		if (total > LIMIT)
 			printf("%s", line);
+
+		if (len + 1 < MAX || line[len - 1] == '\n')
+			total = 0;
+	}
 
 	return 0;
 }
 
-/*
- * Reads a line into s and returns its length.
- * The returned length may be larger than lim.
- * A newline character is always put at the end of the line, even if s is not
- * big enough to store the entire line, unless the line ends with EOF.
- */
+/* Reads a line into s and returns its length. */
 int getline(char s[], int lim)
 {
-	int c, i, j;
+	int c, i;
 
-	j = 0;
-	for (i = 0; (c = getchar()) != EOF && c != '\n'; ++i)
-		/* Leave room for a potential newline char at the end. */
-		if (i < lim - 2) {
-			s[j] = c;
-			++j;
-		}
+	for (i = 0; i < lim - 1 && (c = getchar()) != EOF && c != '\n'; ++i)
+		s[i] = c;
 	if (c == '\n') {
-		s[j] = c;
-		++j;
+		s[i] = c;
 		++i;
 	}
-	s[j] = '\0';
-
+	s[i] = '\0';
 	return i;
 }
