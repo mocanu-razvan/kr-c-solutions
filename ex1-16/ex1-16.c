@@ -24,14 +24,16 @@
 
 #include <stdio.h>
 
-#define MAX 100 /* Maximum input line length. */
+#define MAX 5 /* Maximum input line length. */
 
 int getline(char s[], int lim);
 
 int main()
 {
-	// The variable total represents a line's total length.
-	// The variable text represents the entire text length.
+	/*
+	 * `total` represents a line's total length.
+	 * `text` represents the entire text length.
+	 */
 	int len, total, max, text;
 	char line[MAX];
 
