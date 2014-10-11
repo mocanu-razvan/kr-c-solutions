@@ -22,28 +22,6 @@
  * the text.
  */
 
-/*
- * NOTE: Reading the requirement carefuly leads me to believe the authors
- * were hinting at revising the main() function since they mention printing
- * and counting the total length of the text, operations which the getline()
- * function most certainly shouldn't do.
- *
- * In the first version I did just this, but then I observed that
- * information relating to where a line should end leaked out from
- * getline() into main().
- *
- * Reconsidering a better solution, I ended up modifying getline()
- * which leads to a clean solution that separates the concerns of
- * the functions.
- *
- * Also, it turns out it's best to include a newline character at the end of
- * the line, even if the line array is not big enough to hold the entire line,
- * because the purpose of the getline() function is to do a best effort to
- * acquire a line and its users expect lines terminated with newline characters.
- * Otherwise, unintuitive logic would have to be put in main() to determine
- * if the line contains a newline character or not.
- */
-
 #include <stdio.h>
 
 #define MAX 100 /* Maximum input line length. */
@@ -52,46 +30,40 @@ int getline(char s[], int lim);
 
 int main()
 {
-	int len, max, total;
+	// The variable total represents a line's total length.
+	// The variable text represents the entire text length.
+	int len, total, max, text;
 	char line[MAX];
 
-	len = max = total = 0;
+	len = total = max = text = 0;
 	while ((len = getline(line, MAX)) > 0) {
-		if (len > max)
-			max = len;
 		total = total + len;
+		text = text + len;
+
+		if (len + 1 < MAX || line[len - 1] == '\n') {
+			if (total > max)
+				max = total;
+			total = 0;
+		}
 	}
 
 	printf("longest: %d\n", max);
-	printf("total: %d\n", total);
+	printf("total: %d\n", text);
 
 	return 0;
 }
 
-/*
- * Reads a line into s and returns its length.
- * The returned length may be larger than lim.
- * A newline character is always put at the end of the line, even if s is not
- * big enough to store the entire line, unless the line ends with EOF.
- */
+/* Reads a line into s and returns its length. */
 int getline(char s[], int lim)
 {
-	int c, j;
-	long i;
+	int c, i;
 
-	j = 0;
-	for (i = 0; (c = getchar()) != EOF && c != '\n'; ++i)
-		/* Leave room for a potential newline char at the end. */
-		if (i < lim - 2) {
-			s[j] = c;
-			++j;
-		}
+	for (i = 0; i < lim - 1 && (c = getchar()) != EOF && c != '\n'; ++i)
+		s[i] = c;
 	if (c == '\n') {
-		s[j] = c;
-		++j;
+		s[i] = c;
 		++i;
 	}
-	s[j] = '\0';
-
+	s[i] = '\0';
 	return i;
 }
