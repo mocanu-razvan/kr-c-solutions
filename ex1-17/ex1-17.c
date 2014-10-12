@@ -37,6 +37,7 @@ int main()
 	while ((len = getline(line, MAX)) > 0) {
 		total = total + len;
 
+		/* Works with arbitrarily long input lines only because LIMIT < MAX. */
 		if (total > LIMIT)
 			printf("%s", line);
 
