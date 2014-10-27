@@ -22,8 +22,8 @@
 
 #include <stdio.h>
 
-#define MAX 5 /* Maximum input line length. */
-#define LIMIT 3
+#define MAX 100 /* Maximum input line length. */
+#define LIMIT 80
 
 int getline(char s[], int lim);
 
