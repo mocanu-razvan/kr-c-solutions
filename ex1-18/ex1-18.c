@@ -34,8 +34,8 @@ int main()
 
 	len = 0;
 	while ((len = getline(line, MAX)) > 0) {
-		if ((len = trimline(line, len)) > 0)
-			printf("%s\n", line);
+		if ((len = trimline(line, len)) > 0 && (len != 1 || line[0] != '\n'))
+			printf("%s", line);
 	}
 
 	return 0;
@@ -58,10 +58,26 @@ int getline(char s[], int lim)
 }
 
 /* Removes traling blanks and tabs from a line and returns its new length. */
-int trimline(char s[], int len) {
-	while (len > 0 &&
-			(s[len - 1] == ' ' || s[len - 1] == '\t' || s[len - 1] == '\n'))
+int trimline(char s[], int len)
+{
+	int n; /* Indicates if line contains a new line character. */
+
+	n = 0;
+	--len;
+
+	while (len >= 0 && (s[len] == ' ' || s[len] == '\t' || s[len] == '\n')) {
+		if (n == 0 && s[len] == '\n')
+			n = 1;
 		--len;
+	}
+
+	++len;
+	if (n == 1) {
+		/* Restore new line at end of line. */
+		s[len] = '\n';
+		++len;
+	}
 	s[len] = '\0';
+
 	return len;
 }
