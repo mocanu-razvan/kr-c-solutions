@@ -1,4 +1,4 @@
-/* Exercise 1-18 from K+R
+/* Exercise 1-19 from K+R
  * Copyright (c) 2014 Răzvan Mocanu
  *
  * This program is free software: you can redistribute it and/or modify
