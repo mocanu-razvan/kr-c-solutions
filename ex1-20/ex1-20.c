@@ -24,12 +24,12 @@
 
 #include <stdio.h>
 
-#define N 8
+#define N 8 /* Size of a tab stop. */
 
 int main()
 {
 	int c;
-	int n; /* The remaining number of characters until the next tab stop. */
+	int n; /* Remaining number of characters until the next tab stop. */
 
 	n = N;
 
