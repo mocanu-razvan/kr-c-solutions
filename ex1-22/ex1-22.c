@@ -54,19 +54,19 @@ int main()
 		else if (c == ' ' || c == '\t') {
 			if (f == 0)
 				/*
-					Print blanks at beginning of lines.
-					If a long line is made only of blanks, prefer to fold the
-					line instead of printing all of them on a new line.
-				*/
+				 * Print blanks at beginning of lines.
+				 * If a long line is made only of blanks, prefer to fold the
+				 * line instead of printing all of them on a new line.
+				 */
 				putchar(c);
 			else {
 				/*
-					Potential blank before the fold column.
-					Store it in case a fold is required. In this case
-					the blanks that were at the end of the folded line
-					must be printed at the beginning of the new line
-					to maintain the input's integrity.
-				*/
+				 * Potential blank before the fold column.
+				 * Store it in case a fold is required. In this case
+				 * the blanks that were at the end of the folded line
+				 * must be printed at the beginning of the new line
+				 * to maintain the input's integrity.
+				 */
 				s[z] = c;
 				++z;
 			}
@@ -82,11 +82,11 @@ int main()
 			}
 		} else {
 			/*
-				A new non-blank character.
-				This will be the new fold character of the line.
-				Print it together with any temporarily stored
-				non-blanks before it.
-			*/
+			 * A new non-blank character.
+			 * This will be the new fold character of the line.
+			 * Print it together with any temporarily stored
+			 * non-blanks before it.
+			 */
 			print_blanks(c);
 
 			++n;
@@ -102,9 +102,9 @@ int main()
 }
 
 /*
-	Folds a line: prints a newline character followed by any
-	stored blanks in `s` that were at the end of the line.
-*/
+ * Folds a line: prints a newline character followed by any
+ * stored blanks in `s` that were at the end of the line.
+ */
 void fold(void)
 {
 	int i;
@@ -129,12 +129,12 @@ void fold(void)
 }
 
 /*
-	Prints the blanks stored in `s` in the current line.
-	This is done when the blanks were not actually at the end of the line,
-	i.e. another non-blank character was encoutered in the line after them,
-	or when a newline character is encountered.
-	Prints the encoutered character `c` after the blanks.
-*/
+ * Prints the blanks stored in `s` in the current line.
+ * This is done when the blanks were not actually at the end of the line,
+ * i.e. another non-blank character was encoutered in the line after them,
+ * or when a newline character is encountered.
+ * Prints the encoutered character `c` after the blanks.
+ */
 void print_blanks(char c)
 {
 	int i;
