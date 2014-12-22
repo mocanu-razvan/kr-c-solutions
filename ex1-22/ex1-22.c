@@ -29,7 +29,7 @@
 #define TAB 8	/* Size of a tab stop. */
 
 void fold(void);
-void print_blanks(char c);
+void print(char c);
 
 char s[N];	/* Temporary store for consecutive non-blanks. */
 int z;		/* Length of `s`. */
@@ -50,7 +50,7 @@ int main()
 			fold();
 
 		if (c == '\n')
-			print_blanks(c);
+			print(c);
 		else if (c == ' ' || c == '\t') {
 			if (f == 0)
 				/*
@@ -87,7 +87,7 @@ int main()
 			 * Print it together with any temporarily stored
 			 * non-blanks before it.
 			 */
-			print_blanks(c);
+			print(c);
 
 			++n;
 			--t;
@@ -102,7 +102,7 @@ int main()
 }
 
 /*
- * Folds a line: prints a newline character followed by any
+ * Folds a line by printing a newline character followed by any
  * stored blanks in `s` that were at the end of the line.
  */
 void fold(void)
@@ -129,13 +129,12 @@ void fold(void)
 }
 
 /*
- * Prints the blanks stored in `s` in the current line.
+ * Prints the character c, prefixed by the blanks stored in `s`.
  * This is done when the blanks were not actually at the end of the line,
  * i.e. another non-blank character was encoutered in the line after them,
  * or when a newline character is encountered.
- * Prints the encoutered character `c` after the blanks.
  */
-void print_blanks(char c)
+void print(char c)
 {
 	int i;
 
