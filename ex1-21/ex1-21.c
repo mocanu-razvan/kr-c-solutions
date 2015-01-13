@@ -17,9 +17,9 @@
 
 /*
  * Write a program `entab` that replaces strings of blanks by the minimum
- * number of tabs and blanks to achieve the same spacing. Use the same tab stops as for
- * `detab`. When either a tab or a single blank would suffice to reach a tab stop, which
- * should be given preference?
+ * number of tabs and blanks to achieve the same spacing. Use the same tab
+ * stops as for `detab`. When either a tab or a single blank would suffice to
+ * reach a tab stop, which should be given preference?
  */
 
 #include <stdio.h>
@@ -38,7 +38,10 @@ int main() {
 			++s;
 			--n;
 			if (n == 0) {
-				/* Most simple is to give prefernce to a tab stop when `s == 1`.*/
+				/*
+				 * Most simple is to give prefernce to a tab stop
+				 * when `s == 1`.
+				 */
 				putchar('\t');
 				s = 0;
 				n = N;
