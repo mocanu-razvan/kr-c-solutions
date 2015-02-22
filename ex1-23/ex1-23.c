@@ -23,109 +23,138 @@
 
 #include <stdio.h>
 
-#define NONE 0
-#define CHAR 1 			/* Inside a character constant. */
-#define STR 2 			/* Inside a string constant. */
-#define COMMENT 3		/* Inside a comment. */
-#define START 4			/* At the start of a comment, i.e. after `/` & `*`. */
-#define END 5			/* At the end of a comment, i.e. after `*` & `/`. */
+void unget(int);
+int next(void);
+void quote(int);
+void comment(void);
+
+int b;		/* Input stream buffer. */
 
 int main()
 {
 	int c;
-	int p;	/* The previous character. */
-	int s;	/* The state. */
-	int x;	/* Equals 1 if `c` is part of an escape sequence, 0 otherwise. */
 
-	p = x = 0;
-	s = NONE;
+	/* Initialize the stream buffer. */
+	b = 0;
 
-	while ((c = getchar()) != EOF) {
-		if (x == 1)
-			x = 0;
-		else if (p == '\\')
-			x = 1;
-
-		switch (c) {
-			case '\'':
-				/*
-				 * Start or end of a character constant, unless we are inside
-				 * a comment, string constant or part of an escape sequence.
-				 */
-				if (s == COMMENT || s == STR || x == 1)
-					break;
-				if (s == CHAR)
-					s = NONE;
-				else 
-					s = CHAR;
-				break;
-			case '"':
-				/*
-				 * Start or end of a string constant, unless we are inside
-				 * a comment, character constant or part of an escape sequence.
-				 */
-				if (s == COMMENT || s == CHAR || x == 1)
-					break;
-				if (s == STR)
-					s = NONE;
-				else 
-					s = STR;
-				break;
-			case '/':
-				/*
-				 * The end of a comment only if the previous character is
-				 * `*` and we are not outside of a comment, inside a string or
-				 * character constant.
-				 */
-				if (s != COMMENT || s == STR || s == CHAR || p != '*')
-					break;
-				s = END;
-				break;
-			case '*':
-				/*
-				 * The start of a comment only if the previous character is
-				 * `/` and we aren't inside of a comment, a string or
-				 * character constant.
-				 */
-				if (s == COMMENT || s == STR || s == CHAR || p != '/')
-					break;
-				s = START;
-				break;
-		}
-
-		if (s == END) {
-			/* End a comment .*/
-			s = NONE;
-			p = 0;
-		} else if (s == START) {
-			/* Start a comment. */
-			s = COMMENT;
-			p = 0;
-		} else {
-			if (s != COMMENT) {
-				/* Only print if we are outside of a comment. */
-				if (p == '/')
-					/*
-					 * `/` characters are not printed when encoutered to
-					 * determine if they are part of a comment starting or
-					 * ending sequence.
-					 * Since we have determined the previous such character
-					 * was not part of a comment starting sequence in this case,
-					 * then print it.
-					 */
+	while ((c = next()) != EOF)
+		/* Is it the beginning of a character or string constant? */
+		if (c == '\'' || c == '"')
+			quote(c);
+		/* Is it the beginning of a comment? */
+		else if (c == '/') {
+			/* Look at the next character to confirm. */
+			if ((c = getchar()) != EOF) {
+				if (c == '*')
+					comment();
+				else {
+					/* Put the read character back. */
+					unget(c);
+					/* Print the previous character. */
 					putchar('/');
-				/*
-				 * Don't print `/` characters since they might be part of a
-				 * comment starting sequence. If this proves to be false,
-				 * it will be printed in the next iteration, as explained
-				 * in the comment above.
-				 */
-				if (c != '/')
-					putchar(c);
+				}
 			}
-			p = c;
-		}
-	}
+		} else
+			putchar(c);
 
 	return 0;
+}
+
+/*
+ * Puts a character back in the stream so that it is returned
+ * by the next call to `next()`.
+ */
+void unget(int c)
+{
+	b = c;
+}
+
+/*
+ * Returns the next character from the standard input stream.
+ * If a character has been put back into the stream using a
+ * call to `unget()` then that character is returned and the
+ * buffer is cleared. Otherwise, `getchar()` is used to obtain
+ * the next character in the stream.
+ */
+int next(void)
+{
+	int c;
+
+	if (b != 0) {
+		c = b;
+		b = 0;
+	} else
+		c = getchar();
+
+	return c;
+}
+
+/*
+ * Parses a character or string constant. Takes into
+ * account the existence of escape sequences. Comments
+ * cannot be placed inside these constants so everything
+ * is output.
+ */
+void quote(int q)
+{
+	int c;
+
+	/* Display the beginning quote character. */
+	putchar(q);
+	c = getchar();
+
+	/* Read until the end of the constant. */
+	while (c != EOF && c != q) {
+		putchar(c);
+
+		/* Is it the beginning of an escape sequence? */
+		if (c == '\\')
+			/*
+			 * The escape sequence might escape the quote character.
+			 * If this would be left unhandled, it would be mistaken
+			 * for the end of the constant. Read the next character
+			 * and print it to make sure quotes in escape sequences
+			 * are correctly skipped.
+			 */
+			if ((c = getchar()) != EOF)
+				putchar(c);
+
+		if (c != EOF)
+			c = getchar();
+	}
+
+	/* Print the quote at the end of the constant. */
+	if (c != EOF)
+		putchar(c);
+}
+
+/*
+ * Parses a comment. Comments cannot be nested.
+ * Does not output anything inside, effectively
+ * removing the comment from the input stream.
+ */
+void comment(void)
+{
+	int c;
+	int s;	/* Flag to indicate the end of the comment. */
+
+	s = 0;
+
+	while (s != 1) {
+		/* Read until the beginning of the end of the comment. */
+		while ((c = next()) != EOF && c != '*')
+			;
+
+		if (c == EOF)
+			s = 1;
+		else {
+			/* Read the next character to confirm the end. */
+			c = getchar();
+
+			if (c == '/')
+				s = 1;
+			else
+				unget(c);
+		}
+	}
 }
