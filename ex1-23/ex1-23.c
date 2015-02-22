@@ -25,6 +25,7 @@
 
 void unget(int);
 int next(void);
+
 void quote(int);
 void comment(void);
 
@@ -34,7 +35,7 @@ int main()
 {
 	int c;
 
-	/* Initialize the stream buffer. */
+	/* Initialize the input stream buffer. */
 	b = 0;
 
 	while ((c = next()) != EOF)
