@@ -25,20 +25,21 @@
 
 #include <stdio.h>
 
-int getcharn(void);
+int next(void);
 int quote(int);
 int comment(void);
 void check(int);
 
-int nl;		/* The current line number. */
-int nc;		/* The current column number within the current line. */
-int npar;	/* The current number of unmatched open parentheses. */
-int nbrk;	/* The current number of unmatched open brackets. */
-int nbrc;	/* The current number of unmatched open braces. */
+int nl;		/* Current line number. */
+int nc;		/* Current column number within the current line. */
+int npar;	/* Current number of unmatched open parentheses. */
+int nbrk;	/* Current number of unmatched open brackets. */
+int nbrc;	/* Current number of unmatched open braces. */
 
 int main()
 {
 	int c;
+	int b;	/* Input stream buffer. */
 
 	nl = 1;
 	/*
@@ -49,9 +50,11 @@ int main()
 	 * or start from 0.
 	 */
 	nc = 0;
+
 	npar = nbrk = nbrc = 0;
 
-	c = getcharn();
+	b = 0;
+	c = next();
 
 	while (c != EOF) {
 		/* Is it the beginning of a character or string constant? */
@@ -60,17 +63,25 @@ int main()
 		/* Is it the beginning of a comment? */
 		else if (c == '/') {
 			/* Look at the next character to confirm. */
-			if ((c = getcharn()) != EOF) {
+			if ((c = next()) != EOF) {
 				if (c == '*')
 					c = comment();
 				else
-					check(c);
+					/*
+					 * '/' might be followed by another '/'.
+					 * Put the character in the input stream buffer so that it
+					 * is used as the current character in the next iteration.
+					 */
+					b = c;
 			}
 		} else
 			check(c);
 
-		if (c != EOF)
-			c = getcharn();
+		if (b != 0) {
+			c = b;
+			b = 0;
+		} else if (c != EOF)
+			c = next();
 	}
 
 	/*
@@ -91,7 +102,7 @@ int main()
  * Returns the next character from the standard input stream while
  * increasing the current line and column numbers as appropriate.
  */
-int getcharn(void)
+int next(void)
 {
 	int c;
 
@@ -150,7 +161,7 @@ int quote(int q)
 {
 	int c;
 
-	c = getcharn();
+	c = next();
 
 	/* Read until the end of the constant. */
 	while (c != EOF && c != q) {
@@ -162,10 +173,10 @@ int quote(int q)
 			 * If this would be left unhandled, it would be mistaken
 			 * for the end of the constant.
 			 */
-			c = getcharn();
+			c = next();
 
 		if (c != EOF)
-			c = getcharn();
+			c = next();
 	}
 
 	return c;
@@ -178,17 +189,18 @@ int comment(void)
 	int s;	/* Flag to indicate the end of the comment. */
 
 	s = 0;
+	c = next();
 
 	while (s != 1) {
 		/* Read until the beginning of the end of the comment. */
-		while ((c = getcharn()) != EOF && c != '*')
-			;
+		while (c != EOF && c != '*')
+			c = next();
 
 		if (c == EOF)
 			s = 1;
 		else {
 			/* Read the next character to confirm the end. */
-			c = getcharn();
+			c = next();
 
 			if (c == EOF || c == '/')
 				s = 1;
