@@ -1,4 +1,5 @@
-/* Exercise 1-23 from K+R
+/*
+ * Exercise 1-23 from K+R
  * Copyright (c) 2014 Răzvan Mocanu
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,34 +24,34 @@
 
 #include <stdio.h>
 
-void unget(int);
-int next(void);
-
-void quote(int);
-void comment(void);
-
-int b;		/* Input stream buffer. */
+int quote(int);
+int comment(void);
 
 int main()
 {
+	int b;	/* Input stream buffer. */
 	int c;
 
-	/* Initialize the input stream buffer. */
 	b = 0;
+	c = getchar();
 
-	while ((c = next()) != EOF)
+	while (c != EOF) {
 		/* Is it the beginning of a character or string constant? */
 		if (c == '\'' || c == '"')
-			quote(c);
+			c = quote(c);
 		/* Is it the beginning of a comment? */
 		else if (c == '/') {
 			/* Look at the next character to confirm. */
 			if ((c = getchar()) != EOF) {
 				if (c == '*')
-					comment();
+					c = comment();
 				else {
-					/* Put the read character back. */
-					unget(c);
+					/*
+					 * '/' might be followed by another '/'.
+					 * Put the character in the input stream buffer so that it
+					 * is used as the current character in the next iteration.
+					 */
+					b = c;
 					/* Print the previous character. */
 					putchar('/');
 				}
@@ -58,36 +59,14 @@ int main()
 		} else
 			putchar(c);
 
+		if (b != 0) {
+			c = b;
+			b = 0;
+		} else if (c != EOF)
+			c = getchar();
+	}
+
 	return 0;
-}
-
-/*
- * Puts a character back in the stream so that it is returned
- * by the next call to `next()`.
- */
-void unget(int c)
-{
-	b = c;
-}
-
-/*
- * Returns the next character from the standard input stream.
- * If a character has been put back into the stream using a
- * call to `unget()` then that character is returned and the
- * buffer is cleared. Otherwise, `getchar()` is used to obtain
- * the next character in the stream.
- */
-int next(void)
-{
-	int c;
-
-	if (b != 0) {
-		c = b;
-		b = 0;
-	} else
-		c = getchar();
-
-	return c;
 }
 
 /*
@@ -96,7 +75,7 @@ int next(void)
  * cannot be placed inside these constants so everything
  * is output.
  */
-void quote(int q)
+int quote(int q)
 {
 	int c;
 
@@ -127,6 +106,8 @@ void quote(int q)
 	/* Print the quote at the end of the constant. */
 	if (c != EOF)
 		putchar(c);
+
+	return c;
 }
 
 /*
@@ -134,17 +115,18 @@ void quote(int q)
  * Does not output anything inside, effectively
  * removing the comment from the input stream.
  */
-void comment(void)
+int comment(void)
 {
 	int c;
 	int s;	/* Flag to indicate the end of the comment. */
 
 	s = 0;
+	c = getchar();
 
 	while (s != 1) {
 		/* Read until the beginning of the end of the comment. */
-		while ((c = next()) != EOF && c != '*')
-			;
+		while (c != EOF && c != '*')
+			c = getchar();
 
 		if (c == EOF)
 			s = 1;
@@ -152,10 +134,10 @@ void comment(void)
 			/* Read the next character to confirm the end. */
 			c = getchar();
 
-			if (c == '/')
+			if (c == EOF || c == '/')
 				s = 1;
-			else
-				unget(c);
 		}
 	}
+
+	return c;
 }
