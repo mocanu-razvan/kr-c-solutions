@@ -35,6 +35,7 @@ int nc;		/* Current column number within the current line. */
 int npar;	/* Current number of unmatched open parentheses. */
 int nbrk;	/* Current number of unmatched open brackets. */
 int nbrc;	/* Current number of unmatched open braces. */
+int e;		/* Flag to indicate if errors were found. */
 
 int main()
 {
@@ -51,7 +52,7 @@ int main()
 	 */
 	nc = 0;
 
-	npar = nbrk = nbrc = 0;
+	npar = nbrk = nbrc = e = 0;
 
 	b = 0;
 	c = next();
@@ -88,14 +89,20 @@ int main()
 	 * Do a final check on the counters and
 	 * print appropriate error messages.
 	 */
-	if (npar > 0)
+	if (npar > 0) {
 		printf("%d:%d: unmatched open parentheses \"(\": %d\n", nl, nc, npar);
-	if (nbrk > 0)
+		e = 1;
+	}
+	if (nbrk > 0) {
 		printf("%d:%d: unmatched open brackets \"[\": %d\n", nl, nc, nbrk);
-	if (nbrc > 0)
+		e = 1;
+	}
+	if (nbrc > 0) {
 		printf("%d:%d: unmatched open braces \"{\": %d\n", nl, nc, nbrc);
+		e = 1;
+	}
 
-	return 0;
+	return e;
 }
 
 /*
@@ -142,14 +149,17 @@ void check(int c)
 	if (npar < 0) {
 		printf("%d:%d: unmatched closed parenthesis ')'\n", nl, nc);
 		npar = 0;
+		e = 1;
 	}
 	if (nbrk < 0) {
 		printf("%d:%d: unmatched closed bracket ']'\n", nl, nc);
 		nbrk = 0;
+		e = 1;
 	}
 	if (nbrc < 0) {
 		printf("%d:%d: unmatched closed brace '}'\n", nl, nc);
 		nbrc = 0;
+		e = 1;
 	}
 }
 
