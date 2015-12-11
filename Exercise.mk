@@ -6,13 +6,13 @@
 # Makefile and define the XTARGET variable to be the
 # target to build the respective exercise.
 
-# Use kernel name to detect MinGW.
-UNAME_S = $(shell uname -s 2>/dev/null)
+# Use kernel name to detect Cygwin or MinGW.
+WIN32 = $(shell uname -s 2>/dev/null | egrep 'CYGWIN|MINGW')
 
 # Define the binary file name. On Windows,
 # a file with an `.exe` extension will be
 # generated.
-ifneq (,$(findstring MINGW,$(UNAME_S)))
+ifneq (,$(WIN32))
 	XBIN = $(XTARGET).exe
 else
 	XBIN = $(XTARGET)
