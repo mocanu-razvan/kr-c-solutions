@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ex1-1\ex1-1.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ex1-10\ex1-10.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ex1-12\ex1-12.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ex1-14\ex1-14.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ex1-15\ex1-15.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ex1-16\ex1-16.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ex1-17\ex1-17.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ex1-18\ex1-18.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ex1-19\ex1-19.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ex1-2\ex1-2.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ex1-20\ex1-20.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ex1-21\ex1-21.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ex1-22\ex1-22.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ex1-23\ex1-23.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ex1-24\ex1-24.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ex1-3\ex1-3.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ex1-4\ex1-4.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ex1-5\ex1-5.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ex1-6\ex1-6.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ex1-7\ex1-7.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ex1-8\ex1-8.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ex1-9\ex1-9.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ex2-1\ex2-1.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
