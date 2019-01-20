@@ -24,14 +24,15 @@
 
 #define MAX 32
 
-int main() {
+int main()
+{
 	int i, c;
 	char s[MAX];
 	enum bool { FALSE, TRUE };
 	enum bool done = FALSE;
 
 	i = 0;
-	while (!done) {
+	while (!done)
 		if (i >= MAX - 1)
 			done = TRUE;
 		else if ((c = getchar()) == EOF)
@@ -42,7 +43,6 @@ int main() {
 			s[i] = c;
 			++i;
 		}
-	}
 
 	return 0;
 }
