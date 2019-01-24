@@ -72,8 +72,9 @@ unsigned long htoi(const char s[])
 	}
 
 	/*
-		Depending on the length of s, n might overflow.
-		In this case, the result will be incorrect.
+		Depending on the length of s and the number of bits for the long
+		data type on the machine, n might overflow. In this case, the
+		result will be incorrect.
 	*/
 	return n;
 }
