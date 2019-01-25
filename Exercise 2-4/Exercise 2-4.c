@@ -20,3 +20,34 @@
 	Write an alternative version of squeeze(s1, s2) that deletes each
 	character in s1 that matches any character in the string s2.
 */
+
+#include <stdio.h>
+
+void squeeze(char[], const char[]);
+
+int main()
+{
+	char s1[] = "Kernighan";
+	const char s2[] = "Ritchie";
+
+	printf("squeeze(%s, %s) = ", s1, s2);
+	squeeze(s1, s2);
+	printf("%s\n", s1);
+
+	return 0;
+}
+
+void squeeze(char s1[], const char s2[])
+{
+	unsigned int i;
+	unsigned int j;
+	unsigned int k;
+
+	for (i = j = 0; s1[j] != '\0'; j++) {
+		for (k = 0; s2[k] != '\0' && s1[j] != s2[k]; k++)
+			;
+		if (s2[k] == '\0')
+			s1[i++] = s1[j];
+	}
+	s1[i] = '\0';
+}
