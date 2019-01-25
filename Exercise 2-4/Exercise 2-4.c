@@ -39,9 +39,9 @@ int main()
 
 void squeeze(char s1[], const char s2[])
 {
-	unsigned int i;
-	unsigned int j;
-	unsigned int k;
+	unsigned int i;		/* Current index in s1 for character not found in s2.*/
+	unsigned int j;		/* Current index in s1. */
+	unsigned int k;		/* Current index in s2. */
 
 	for (i = j = 0; s1[j] != '\0'; j++) {
 		for (k = 0; s2[k] != '\0' && s1[j] != s2[k]; k++)
