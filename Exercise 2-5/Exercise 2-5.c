@@ -42,12 +42,10 @@ int any(const char s1[], const char s2[])
 	int i;		/* Current index in s1. */
 	int j;		/* Current index in s2. */
 
-	for (i = 0; s1[i] != '\0'; i++) {
-		for (j = 0; s2[j] != '\0' && s1[i] != s2[j]; j++)
-			;
-		if (s2[j] != '\0')
-			return i;
-	}
+	for (i = 0; s1[i] != '\0'; i++)
+		for (j = 0; s2[j] != '\0'; j++)
+			if (s1[i] == s2[j])
+				return i;
 
 	return -1;
 }
