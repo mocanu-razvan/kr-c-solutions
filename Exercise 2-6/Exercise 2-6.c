@@ -28,19 +28,21 @@ int setbits(int, unsigned int, unsigned int, int);
 
 int main()
 {
-	printf("setbits(%d, %d, %d, %d) = %d\n", 0x12ff5678, 23, 8, 0x34, setbits(0x12ff5678, 23, 8, 0x34));
-	printf("setbits(%d, %d, %d, %d) = %d\n", 0xedcc, 3, 4, 0xb, setbits(0xedcc, 3, 4, 0xb));
-	printf("setbits(%d, %d, %d, %d) = %d\n", 0x7c0, 10, 11, 0x7e3, setbits(0x7c0, 10, 11, 0x7e3));
+	printf("%s\t\t\t\t\t%s\t%s\n", "Test", "Expected", "Actual");
+	printf("%s\t\t\t\t\t%s\t%s\n", "----", "--------", "------");
+	printf("%s\t%d\t%d\n", "setbits(0x12ff5678, 23, 8, 0x34)", 0x12345678, setbits(0x12ff5678, 23, 8, 0x34));
+	printf("%s\t\t%d\t\t%d\n", "setbits(0xedcc, 3, 4, 0xb)", 0xedcb, setbits(0xedcc, 3, 4, 0xb));
+	printf("%s\t\t%d\t\t%d\n", "setbits(0x7c0, 10, 11, 0x7e3)", 0x7e3, setbits(0x7c0, 10, 11, 0x7e3));
 	return 0;
 }
 
 int setbits(int x, unsigned int p, unsigned int n, int y)
 {
-	int xb;		/* Integer derived from x by setting to 0 the n bits that begin at position p. */
-	int yb;		/* Integer derived from y by setting to 0 all bits except the rightmost n ones
+	int a;		/* Integer derived from x by setting to 0 the n bits that begin at position p. */
+	int b;		/* Integer derived from y by setting to 0 all bits except the rightmost n ones
 				and aligning them to position p. */
-	xb = x & ~(~(~0 << n) << (p - n + 1));
-	yb = (y & ~(~0 << n)) << (p - n + 1);
-	x = xb | yb;
+	a = x & ~(~(~0 << n) << (p - n + 1));
+	b = (y & ~(~0 << n)) << (p - n + 1);
+	x = a | b;
 	return x;
 }
