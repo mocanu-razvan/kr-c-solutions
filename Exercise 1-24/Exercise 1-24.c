@@ -1,27 +1,27 @@
 /*
- * Exercise 1-24 from K+R
- * Copyright (c) 2019 Răzvan Mocanu
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+Exercise 1-24 from K+R
+Copyright (c) 2019 Răzvan Mocanu
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
 /*
- * Write a program to check a C program for rudimentary syntax errors like
- * unmatched parentheses, brackets and braces. Don't forget about quotes, both
- * single and double, escape sequences, and comments. (This program is hard if
- * you do it in full generality.)
- */
+Write a program to check a C program for rudimentary syntax errors like
+unmatched parentheses, brackets and braces. Don't forget about quotes, both
+single and double, escape sequences, and comments. (This program is hard if
+you do it in full generality.)
+*/
 
 #include <stdio.h>
 
@@ -44,12 +44,12 @@ int main()
 
 	nl = 1;
 	/*
-	 * Since the check is done after reading a character, the column number
-	 * will indicate the next character when an error is encountered.
-	 * To display the column number of the unmatched parenthesis, bracket or
-	 * brace we can either always substract 1 when printing the error message,
-	 * or start from 0.
-	 */
+	Since the check is done after reading a character, the column number
+	will indicate the next character when an error is encountered.
+	To display the column number of the unmatched parenthesis, bracket or
+	brace we can either always substract 1 when printing the error message,
+	or start from 0.
+	*/
 	nc = 0;
 
 	npar = nbrk = nbrc = e = 0;
@@ -69,10 +69,10 @@ int main()
 					c = comment();
 				else
 					/*
-					 * '/' might be followed by another '/'.
-					 * Put the character in the input stream buffer so that it
-					 * is used as the current character in the next iteration.
-					 */
+					'/' might be followed by another '/'.
+					Put the character in the input stream buffer so that it
+					is used as the current character in the next iteration.
+					*/
 					b = c;
 			}
 		} else
@@ -86,9 +86,9 @@ int main()
 	}
 
 	/*
-	 * Do a final check on the counters and
-	 * print appropriate error messages.
-	 */
+	Do a final check on the counters and
+	print appropriate error messages.
+	*/
 	if (npar > 0) {
 		printf("%d:%d: unmatched open parentheses \"(\": %d\n", nl, nc, npar);
 		e = 1;
@@ -106,9 +106,9 @@ int main()
 }
 
 /*
- * Returns the next character from the standard input stream while
- * increasing the current line and column numbers as appropriate.
- */
+Returns the next character from the standard input stream while
+increasing the current line and column numbers as appropriate.
+*/
 int next(void)
 {
 	int c;
@@ -125,12 +125,12 @@ int next(void)
 }
 
 /*
- * Checks for unmatched parentheses, brackets and braces.
- * If any of the counters becomes negative it means there is
- * an unmatched closed parenthesis, bracket or, respectivelly, brace.
- * In this case, the function prints an appropriate error message.
- * The counters are allowed to be positive, since they might return to 0 later.
- */
+Checks for unmatched parentheses, brackets and braces.
+If any of the counters becomes negative it means there is
+an unmatched closed parenthesis, bracket or, respectivelly, brace.
+In this case, the function prints an appropriate error message.
+The counters are allowed to be positive, since they might return to 0 later.
+*/
 void check(int c)
 {
 	if (c == '(')
@@ -164,9 +164,9 @@ void check(int c)
 }
 
 /*
- * Skips over the characters of a character or string constant.
- * Correctly handles possible escape sequences.
- */
+Skips over the characters of a character or string constant.
+Correctly handles possible escape sequences.
+*/
 int quote(int q)
 {
 	int c;
@@ -178,11 +178,11 @@ int quote(int q)
 		/* Is it the beginning of an escape sequence? */
 		if (c == '\\')
 			/*
-			 * Skip the next character.
-			 * The escape sequence might escape the quote character.
-			 * If this would be left unhandled, it would be mistaken
-			 * for the end of the constant.
-			 */
+			Skip the next character.
+			The escape sequence might escape the quote character.
+			If this would be left unhandled, it would be mistaken
+			for the end of the constant.
+			*/
 			c = next();
 
 		if (c != EOF)
